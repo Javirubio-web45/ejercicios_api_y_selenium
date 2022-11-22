@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "a8c66e31-f0f7-495b-b938-e40cc6082eb4",
+		"name": "Pokeapi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21334713"
+	},
+	"item": [
+		{
+			"name": "first_request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"console.log(jsonData.pokedex)\r",
+							"pm.environment.set(\"url_pokedex\", jsonData.pokedex)\r",
+							"\r",
+							"//Tests\r",
+							"\r",
+							"pm.test(\"Validar el codigo de respuesta\", function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar que hay un body response\", function(){\r",
+							"    pm.response.to.be.withBody;\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://pokeapi.co/api/v2/",
+					"protocol": "https",
+					"host": [
+						"pokeapi",
+						"co"
+					],
+					"path": [
+						"api",
+						"v2",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_url_pokedex_national",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"for (var i = 0 ; i < jsonData.results.length ; i++){\r",
+							"    if(jsonData.results[i].name == \"national\"){\r",
+							"        console.log(jsonData.results[i].url)\r",
+							"        pm.environment.set(\"url_pokedex_national\", jsonData.results[i].url)\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"//Tests\r",
+							"\r",
+							"pm.test(\"Validar el codigo de respuesta\", function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar que hay un body response\", function(){\r",
+							"    pm.response.to.be.withBody;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_pokedex}}",
+					"host": [
+						"{{url_pokedex}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get_entry_number_144",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"\r",
+							"for(var i = 0 ; i < jsonData.pokemon_entries.length ; i++ ){\r",
+							"    if(jsonData.pokemon_entries[i].entry_number == 144){\r",
+							"    console.log(jsonData.pokemon_entries[i].pokemon_species.url)\r",
+							"    pm.environment.set(\"url_pokemon_species_144\", jsonData.pokemon_entries[i].pokemon_species.url)\r",
+							"    }\r",
+							"}\r",
+							"\r",
+							"//Tests\r",
+							"\r",
+							"pm.test(\"Validar el codigo de respuesta\", function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar que hay un body response\", function(){\r",
+							"    pm.response.to.be.withBody;\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_pokedex_national}}",
+					"host": [
+						"{{url_pokedex_national}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "validar_pokemon_articuno",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json()\r",
+							"\r",
+							"var name = \"articuno\"\r",
+							"var is_legendary = true\r",
+							"var is_mythical = false\r",
+							"var id = 144\r",
+							"\r",
+							"\r",
+							"//Tests\r",
+							"\r",
+							"pm.test(\"Validar name articuno\", ()=>{\r",
+							"    pm.expect(jsonData.name).to.eql(name)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar que sea legendario\", ()=>{\r",
+							"    pm.expect(jsonData.is_legendary).to.eql(is_legendary)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar que sea mitico\", ()=>{\r",
+							"    pm.expect(jsonData.is_mythical).to.eql(is_mythical)\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Validar id 144\", ()=>{\r",
+							"    pm.expect(jsonData.id).to.eql(id)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_pokemon_species_144}}",
+					"host": [
+						"{{url_pokemon_species_144}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
